@@ -1,5 +1,4 @@
-#ifndef Request_hpp
-#define Request_hpp
+#pragma once
 
 #include <stdio.h>
 
@@ -9,13 +8,11 @@
 class Request
 {
 public:
-    Request(){};
-    virtual ~Request(){};
+	Request() {};
+	virtual ~Request() {};
 
-    std::string valueForKey(std::string key);
+	std::string valueForKey(std::string key);
 
 private:
-    std::shared_ptr<std::stringstream> ssRequest;
+	std::shared_ptr<std::stringstream> ssRequest;
 };
-
-#endif /* Request_hpp */

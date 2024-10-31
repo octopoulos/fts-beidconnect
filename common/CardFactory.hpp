@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef CardFactory_hpp
-#define CardFactory_hpp
-
 #include <stdio.h>
 #include "Card.hpp"
 #include <memory>
@@ -11,11 +8,8 @@
 class CardFactory
 {
 public:
-   CardFactory();
-   ~CardFactory();
+	CardFactory();
+	~CardFactory();
 
-   static std::shared_ptr<Card> createCard(const std::shared_ptr<CardReader>& reader);
+	static std::shared_ptr<Card> createCard(const std::shared_ptr<CardReader>& reader);
 };
-
-
-#endif /* CardFactory_hpp */

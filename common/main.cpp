@@ -14,32 +14,38 @@
 #include "setup.hpp"
 #include "test.hpp"
 #include "general.h"
+#include "beid.h"
 
-int main(int argc, const char * argv[]) {
-   
-   for (int i = 1; i < argc; i++) {
-      if (strcmp(argv[i], "-version") == 0) {
+int main(int argc, const char* argv[])
+{
+	for (int i = 1; i < argc; i++)
+	{
+		if (strcmp(argv[i], "-version") == 0)
+		{
+			std::cout << BEIDCONNECT_VERSION;
+			exit(0);
+		}
+		else if (strcmp(argv[i], "-card") == 0)
+		{
+			std::cout << ReadCardData();
+			return 0;
+		}
+		else if (strcmp(argv[i], "-test") == 0)
+		{
+			log_init(LOG_FILE, 1, 1);
+			return runTest(argc, argv); // run as test and exit
+		}
+		else if (strcmp(argv[i], "-setup") == 0)
+		{
+			// generate the necessary json file for use with the Chrome/Firefox
+			// extensions
+			log_init(LOG_FILE, 1, 1);
+			return runSetup(argc, argv);
+		}
+	}
 
-         std::cout << BEIDCONNECT_VERSION;
-         exit(0);
-      }
-      else if (strcmp(argv[i], "-test") == 0) {
-
-         log_init(LOG_FILE, 1, 1);
-         return runTest(argc, argv);  //run as test and exit
-      }
-      else if (strcmp(argv[i], "-setup") == 0) {
-	 //generate the necessary json file for use with the Chrome/Firefox
-	 //extensions
-         log_init(LOG_FILE, 1, 1);
-         return runSetup(argc, argv);
-      }
-   }
-
-   log_init(LOG_FILE, 0, 0);
-   log_info("**** BeIDConnect native ****");
-   runNative(argc, argv);    //run as chrome extension and exit afterwards
-   return 0;
+	log_init(LOG_FILE, 0, 0);
+	log_info("**** BeIDConnect native ****");
+	runNative(argc, argv); // run as chrome extension and exit afterwards
+	return 0;
 }
-
-

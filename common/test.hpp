@@ -1,9 +1,6 @@
 #pragma once
 
-#ifndef __RUN_TEST_H__
-#define __RUN_TEST_H__
-                                         
-int runTest(int argc, const char * argv[]);
+int runTest(int argc, const char* argv[]);
 
 #ifdef _DEBUG
 extern bool unittest_Generate_Exception_No_Reader;
@@ -21,6 +18,3 @@ extern bool unittest_Generate_Exception_PIN_TOO_SHORT;
 extern bool unittest_Generate_Exception_PIN_TOO_LONG;
 extern bool unittest_Generate_Exception_PIN_Incorrect;
 #endif
-
-#endif //__RUN_TEST_H__
-

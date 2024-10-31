@@ -3,7 +3,7 @@
 
 unsigned int hash_length_for_algo(int hashAlgo)
 {
-	switch (hashAlgo) 
+	switch (hashAlgo)
 	{
 	case DIGEST_ALGO_SHA256:
 		return DIGEST_ALGO_SHA256_LEN;
@@ -18,7 +18,7 @@ unsigned int hash_length_for_algo(int hashAlgo)
 
 size_t hash_length_for_algoheader(int hashAlgo)
 {
-	switch (hashAlgo) 
+	switch (hashAlgo)
 	{
 	case DIGEST_ALGO_SHA256:
 		return DIGEST_ALGO_SHA256_HEAD_LEN;
@@ -33,25 +33,24 @@ size_t hash_length_for_algoheader(int hashAlgo)
 
 const unsigned char* hash_header_for_algo(int hashAlgo)
 {
-	switch (hashAlgo) 
+	switch (hashAlgo)
 	{
-		case DIGEST_ALGO_SHA256:
-			return DIGEST_ALGO_SHA256_HEAD;
-		case DIGEST_ALGO_SHA384:
-			return DIGEST_ALGO_SHA384_HEAD;
-		case DIGEST_ALGO_SHA512:
-			return DIGEST_ALGO_SHA512_HEAD;
-		default:
-			return 0;
+	case DIGEST_ALGO_SHA256:
+		return DIGEST_ALGO_SHA256_HEAD;
+	case DIGEST_ALGO_SHA384:
+		return DIGEST_ALGO_SHA384_HEAD;
+	case DIGEST_ALGO_SHA512:
+		return DIGEST_ALGO_SHA512_HEAD;
+	default:
+		return 0;
 	}
 }
 
-
-unsigned int algo2str(const char *hash_algo)
+unsigned int algo2str(const char* hash_algo)
 {
-   if (!strcmp(hash_algo, "SHA384") || !strcmp(hash_algo, "SHA-384"))
-      return DIGEST_ALGO_SHA384;
-   if (!strcmp(hash_algo, "SHA512") || !strcmp(hash_algo, "SHA-512"))
-      return DIGEST_ALGO_SHA512;
-   return DIGEST_ALGO_SHA256;
+	if (!strcmp(hash_algo, "SHA384") || !strcmp(hash_algo, "SHA-384"))
+		return DIGEST_ALGO_SHA384;
+	if (!strcmp(hash_algo, "SHA512") || !strcmp(hash_algo, "SHA-512"))
+		return DIGEST_ALGO_SHA512;
+	return DIGEST_ALGO_SHA256;
 }

@@ -1,24 +1,28 @@
 #include <stdio.h>
-#include <stdlib.h> 
+#include <stdlib.h>
 #include <time.h>
 #include <string.h>
 #include <stdarg.h>
 #include "log.hpp"
 
 #if defined(DEBUG) && defined(_WIN32)
-#include <windows.h>
+#	include <windows.h>
 #endif
 
-#define CLEANUP(x)   { err = (x); goto cleanup; }
+#define CLEANUP(x)    \
+	{                 \
+		err = (x);    \
+		goto cleanup; \
+	}
 
 /******************************************************************************
  *
  * Globals
  *
  ******************************************************************************/
-char   g_szLogFile[MAX_PATH] = "";
-int    g_logStdOut;
-int    g_logErrorStdOut;
+char g_szLogFile[MAX_PATH] = "";
+int  g_logStdOut;
+int  g_logErrorStdOut;
 
 /******************************************************************************
  *
@@ -28,10 +32,9 @@ int    g_logErrorStdOut;
 void log_init(const char* pszLogFile, int logStdOut, int logErrorStdOut)
 {
 	strncpy(g_szLogFile, pszLogFile, sizeof(g_szLogFile));
-	g_logStdOut = logStdOut;
+	g_logStdOut      = logStdOut;
 	g_logErrorStdOut = logErrorStdOut;
 }
-
 
 /******************************************************************************
  *
@@ -41,46 +44,46 @@ void log_init(const char* pszLogFile, int logStdOut, int logErrorStdOut)
 void log_info_(const char* string, ...)
 {
 #if defined(DEBUG) && defined(_WIN32)
-	static char   buf2[0x4000];
-	va_list       args2;
-	va_start(args2, string);				    // get args from param-string	
-	_vsnprintf(buf2, sizeof(buf2), string, args2);	// convert to string
+	static char buf2[0x4000];
+	va_list     args2;
+	va_start(args2, string);                       // get args from param-string
+	_vsnprintf(buf2, sizeof(buf2), string, args2); // convert to string
 	OutputDebugStringA(buf2);
 	OutputDebugStringA("\n");
 #endif
 
 #ifdef LOG_INFO
-	static char   buf[0x4000];
-	va_list       args;
-	FILE* fp;
-	//EnterCriticalSection(&g_cs);
+	static char buf[0x4000];
+	va_list     args;
+	FILE*       fp;
+	// EnterCriticalSection(&g_cs);
 	if (strcmp(g_szLogFile, "") == 0)
 		goto cleanup;
 	if ((fp = fopen(g_szLogFile, "a")) == NULL)
 		goto cleanup;
 
-	va_start(args, string);				              // get args from param-string	
-#ifdef _WIN32
-	_vsnprintf(buf, sizeof(buf), string, args);	// convert to string	
-#else
-	vsnprintf(buf, sizeof(buf), string, args);	// convert to string	
-#endif
-	va_end(args);						                    // free arguments
+	va_start(args, string); // get args from param-string
+#	ifdef _WIN32
+	_vsnprintf(buf, sizeof(buf), string, args); // convert to string
+#	else
+	vsnprintf(buf, sizeof(buf), string, args); // convert to string
+#	endif
+	va_end(args); // free arguments
 
-#ifdef _WIN32
+#	ifdef _WIN32
 	fprintf(fp, "%s", buf);
-#else
+#	else
 	fprintf(fp, "%s", buf);
-#endif
+#	endif
 	fclose(fp);
 
-#ifdef _DEBUG
+#	ifdef _DEBUG
 	if (g_logStdOut)
 		printf("%s", buf);
-#endif
+#	endif
 
 cleanup:
-	//LeaveCriticalSection(&g_cs);
+	// LeaveCriticalSection(&g_cs);
 	return;
 #endif
 }
@@ -93,49 +96,50 @@ cleanup:
 void log_info(const char* string, ...)
 {
 #if defined(DEBUG) && defined(_WIN32)
-	static char   buf2[0x4000];
-	va_list       args2;
-	va_start(args2, string);				    // get args from param-string	
-	_vsnprintf(buf2, sizeof(buf2), string, args2);	// convert to string
+	static char buf2[0x4000];
+	va_list     args2;
+	va_start(args2, string);                       // get args from param-string
+	_vsnprintf(buf2, sizeof(buf2), string, args2); // convert to string
 	OutputDebugStringA(buf2);
 	OutputDebugStringA("\n");
 #endif
 
 #ifdef LOG_INFO
-	static char   buf[0x4000];
-	va_list       args;
-	FILE* fp;
-	//EnterCriticalSection(&g_cs);
+	static char buf[0x4000];
+	va_list     args;
+	FILE*       fp;
+	// EnterCriticalSection(&g_cs);
 	if (strcmp(g_szLogFile, "") == 0)
 		goto cleanup;
 	if ((fp = fopen(g_szLogFile, "a")) == NULL)
 		goto cleanup;
 
-	va_start(args, string);				              // get args from param-string	
-#ifdef _WIN32
-	_vsnprintf(buf, sizeof(buf), string, args);	// convert to string	
-#else
-	vsnprintf(buf, sizeof(buf), string, args);	// convert to string	
-#endif
-	va_end(args);						                    // free arguments
+	va_start(args, string); // get args from param-string
+#	ifdef _WIN32
+	_vsnprintf(buf, sizeof(buf), string, args); // convert to string
+#	else
+	vsnprintf(buf, sizeof(buf), string, args); // convert to string
+#	endif
+	va_end(args); // free arguments
 
-#ifdef _WIN32
+#	ifdef _WIN32
 	fprintf(fp, "%s\n", buf);
-#else
+#	else
 	fprintf(fp, "%s\n", buf);
-#endif
+#	endif
 	fclose(fp);
 
-	//#ifdef _DEBUG
+	// #ifdef _DEBUG
 	if (g_logStdOut)
 		printf("%s\n", buf);
-	//#endif
+	// #endif
 
 cleanup:
-	//LeaveCriticalSection(&g_cs);
+	// LeaveCriticalSection(&g_cs);
 	return;
 #endif
 }
+
 /******************************************************************************
  *
  * log_error
@@ -144,21 +148,21 @@ cleanup:
 void log_error(const char* string, ...)
 {
 #if defined(DEBUG) && defined(_WIN32)
-	static char   buf2[0x4000];
-	va_list       args2;
-	va_start(args2, string);				    // get args from param-string	
-	_vsnprintf(buf2, sizeof(buf2), string, args2);	// convert to string
+	static char buf2[0x4000];
+	va_list     args2;
+	va_start(args2, string);                       // get args from param-string
+	_vsnprintf(buf2, sizeof(buf2), string, args2); // convert to string
 	OutputDebugStringA(buf2);
 	OutputDebugStringA("\n");
 #endif
 
-	static char   buf[0x4000];
-	char timestring[20];
-	va_list       args;
-	FILE* fp;
-	time_t rawtime;
-	struct tm* timeinfo;
-	//EnterCriticalSection(&g_cs);
+	static char buf[0x4000];
+	char        timestring[20];
+	va_list     args;
+	FILE*       fp;
+	time_t      rawtime;
+	struct tm*  timeinfo;
+	// EnterCriticalSection(&g_cs);
 
 	time(&rawtime);
 	timeinfo = localtime(&rawtime);
@@ -169,18 +173,18 @@ void log_error(const char* string, ...)
 	if ((fp = fopen(g_szLogFile, "a")) == NULL)
 		goto cleanup;
 
-	va_start(args, string);				              // get args from param-string	
+	va_start(args, string); // get args from param-string
 #ifdef _WIN32
-	_vsnprintf(buf, sizeof(buf), string, args);	// convert to string	
+	_vsnprintf(buf, sizeof(buf), string, args); // convert to string
 #else
-	vsnprintf(buf, sizeof(buf), string, args);	// convert to string	
+	vsnprintf(buf, sizeof(buf), string, args); // convert to string
 #endif
-	va_end(args);						                    // free arguments
+	va_end(args); // free arguments
 
 #ifdef _WIN32
-	fprintf(fp, "%s%s \n", timestring, buf);
+	fprintf(fp, "%s%s\n", timestring, buf);
 #else
-	fprintf(fp, "%s%s \n", timestring, buf);
+	fprintf(fp, "%s%s\n", timestring, buf);
 #endif
 	fclose(fp);
 
@@ -190,6 +194,6 @@ void log_error(const char* string, ...)
 #endif
 
 cleanup:
-	//LeaveCriticalSection(&g_cs);
+	// LeaveCriticalSection(&g_cs);
 	return;
 }
